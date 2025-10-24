@@ -40,7 +40,7 @@ func InitDatabase() error {
 
 func createTables() error {
 	query := `
-	CREATE TABLE IF NOT EXISTS users (
+	CREATE TABLE IF NOT EXISTS users_go (
 		id SERIAL PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
 		email VARCHAR(255) UNIQUE NOT NULL,
@@ -49,7 +49,7 @@ func createTables() error {
 		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
 
-	CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+	CREATE INDEX IF NOT EXISTS idx_users_email ON users_go(email);
 	`
 
 	_, err := DB.Exec(query)

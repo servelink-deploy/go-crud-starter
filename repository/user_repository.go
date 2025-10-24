@@ -18,7 +18,7 @@ func NewUserRepository() *UserRepository {
 
 func (r *UserRepository) Create(user *models.CreateUserRequest) (*models.User, error) {
 	query := `
-		INSERT INTO users (name, email, phone)
+		INSERT INTO users_go (name, email, phone)
 		VALUES ($1, $2, $3)
 		RETURNING id, name, email, phone, created_at, updated_at
 	`
@@ -45,7 +45,7 @@ func (r *UserRepository) FindAll(page, limit int) (*models.PaginatedResponse, er
 
 	query := `
 		SELECT id, name, email, phone, created_at, updated_at
-		FROM users
+		FROM users_go
 		ORDER BY id DESC
 		LIMIT $1 OFFSET $2
 	`
@@ -74,7 +74,7 @@ func (r *UserRepository) FindAll(page, limit int) (*models.PaginatedResponse, er
 	}
 
 	var total int
-	err = r.db.QueryRow("SELECT COUNT(*) FROM users").Scan(&total)
+	err = r.db.QueryRow("SELECT COUNT(*) FROM users_go").Scan(&total)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (r *UserRepository) FindAll(page, limit int) (*models.PaginatedResponse, er
 func (r *UserRepository) FindByID(id int) (*models.User, error) {
 	query := `
 		SELECT id, name, email, phone, created_at, updated_at
-		FROM users
+		FROM users_go
 		WHERE id = $1
 	`
 
@@ -120,7 +120,7 @@ func (r *UserRepository) FindByID(id int) (*models.User, error) {
 func (r *UserRepository) Search(query string) ([]models.User, error) {
 	searchQuery := `
 		SELECT id, name, email, phone, created_at, updated_at
-		FROM users
+		FROM users_go
 		WHERE name ILIKE $1 OR email ILIKE $1
 		ORDER BY id DESC
 		LIMIT 50
@@ -181,7 +181,7 @@ func (r *UserRepository) Update(id int, req *models.UpdateUserRequest) (*models.
 	args = append(args, id)
 
 	query := fmt.Sprintf(`
-		UPDATE users
+		UPDATE users_go
 		SET %s
 		WHERE id = $%d
 		RETURNING id, name, email, phone, created_at, updated_at
@@ -208,7 +208,7 @@ func (r *UserRepository) Update(id int, req *models.UpdateUserRequest) (*models.
 }
 
 func (r *UserRepository) Delete(id int) (bool, error) {
-	query := "DELETE FROM users WHERE id = $1"
+	query := "DELETE FROM users_go WHERE id = $1"
 	result, err := r.db.Exec(query, id)
 	if err != nil {
 		return false, err
@@ -227,10 +227,10 @@ func (r *UserRepository) EmailExists(email string, excludeID *int) (bool, error)
 	var args []interface{}
 
 	if excludeID != nil {
-		query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = $1 AND id != $2)"
+		query = "SELECT EXISTS(SELECT 1 FROM users_go WHERE email = $1 AND id != $2)"
 		args = []interface{}{email, *excludeID}
 	} else {
-		query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)"
+		query = "SELECT EXISTS(SELECT 1 FROM users_go WHERE email = $1)"
 		args = []interface{}{email}
 	}
 
