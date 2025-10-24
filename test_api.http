@@ -1,0 +1,34 @@
+### Health Check
+GET http://localhost:8000/health
+
+### Créer un utilisateur
+POST http://localhost:8000/api/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "phone": "+33612345678"
+}
+
+### Récupérer tous les utilisateurs (page 1)
+GET http://localhost:8000/api/users?page=1&limit=20
+
+### Rechercher des utilisateurs
+GET http://localhost:8000/api/users/search?q=john
+
+### Récupérer un utilisateur par ID
+GET http://localhost:8000/api/users/1
+
+### Mettre à jour un utilisateur
+PUT http://localhost:8000/api/users/1
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "phone": "+33698765432"
+}
+
+### Supprimer un utilisateur
+DELETE http://localhost:8000/api/users/1

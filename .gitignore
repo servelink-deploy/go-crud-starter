@@ -1,0 +1,9 @@
+.env
+.env.local
+*.log
+app
+go-crud-starter
+.DS_Store
+.vscode/
+.idea/
+vendor/
